@@ -11,6 +11,7 @@
 </head>
 
 <body>
+    @include('layouts.navigation')
     <div class="container py-5">
         <h1>Blog DSI21</h1>
         <table class="table table-bordered">
