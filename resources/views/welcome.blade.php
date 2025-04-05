@@ -269,12 +269,11 @@
     </div>
 @endsection
 
+
 @section('footer')
-    <footer class="py-5 text-center text-body-secondary bg-body-tertiary">
-        <p>Blog template built for <a href="https://getbootstrap.com/">Bootstrap</a> by <a
-                href="https://x.com/mdo">@mdo</a>.</p>
-        <p class="mb-0">
-            <a href="#">Back to top</a>
-        </p>
+    <footer class="text-center text-lg-start bg-light text-muted">
+        <div class="text-center p-3" style="background-color: #f8f9fa;">
+            © 2025 Blog DSI21
+        </div>
     </footer>
 @endsection
