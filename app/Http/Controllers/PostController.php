@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\Post;
+use App\Models\User;
+use App\Models\Category;
 use Illuminate\Http\Request;
 
 class PostController extends Controller
@@ -21,7 +23,13 @@ class PostController extends Controller
      */
     public function create()
     {
-        //
+
+        // Récupérer la liste des utilisateurs
+        $authors = User::all();
+
+        // Récupérer la liste des catégories
+        $categories = Category::all();
+        return view('posts.create', compact('authors', 'categories'));
     }
 
     /**
@@ -29,7 +37,19 @@ class PostController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        // Créer une nouvelle instance de Post
+        $newPost = new Post();
+        $newPost->title = $request->title;
+        $newPost->content = $request->input('content');
+        $newPost->user_id = $request->input('user_id'); // Récupérer l'ID de l'auteur   
+        $newPost->category_id = $request->input('category_id'); // Récupérer l'ID de la catégorie
+        
+        // Sauvegarder le post
+        $newPost->save();  
+        
+        // Rediriger vers la liste des posts
+        
+        return redirect()->route('posts.index');
     }
 
     /**
