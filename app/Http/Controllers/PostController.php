@@ -49,7 +49,7 @@ class PostController extends Controller
         
         // Rediriger vers la liste des posts
         
-        return redirect()->route('posts.index');
+        return redirect()->route('posts.show', $newPost->id)->with('success', 'Post created successfully.');
     }
 
     /**
