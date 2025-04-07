@@ -6,33 +6,47 @@
         @csrf
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
-            <input type="text" class="form-control" id="title" name="title" value="{{ old('title') }}">
+            <input type="text" class="form-control @error('title') is-invalid @enderror" id="title" name="title"
+                value="{{ old('title') }}" placeholder="Enter the title of the post">
+            @error('title')
+                <div class="invalid-feedback">
+                    {{ $message }}
+                </div>
+            @enderror
         </div>
         <div class="mb-3">
             <label for="content" class="form-label">Content</label>
-            <textarea class="form-control" id="content" name="content" rows="3">{{ old('content') }}</textarea>
+            <textarea class="form-control @error('content') is-invalid @enderror" name="content" id="content" rows="3"
+                placeholder="Enter content">{{ old('content') }}</textarea>
+            @error('content')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
         </div>
         <div class="mb-3">
             <label for="user" class="form-label">Author</label>
             <select class="form-select" id="user" name="user_id">
                 <option selected>Select the author</option>
                 @foreach ($authors as $author)
-                    <option value="{{ $author->id }}">{{ $author->name }}</option>
+                    <option value="{{ $author->id }}" @if (old('user_id') == $author->id) selected="selected" @endif>{{ $author->name }}</option>
                 @endforeach
-            </select>
+            </select>   
         </div>
         <div class="mb-3">
             <label for="category" class="form-label">Category</label>
             <select class="form-select" id="category" name="category_id">
                 <option selected>Select a category</option>
                 @foreach ($categories as $category)
-                    <option value="{{ $category->id }}">{{ $category->name }}</option>
+                    <option value="{{ $category->id }}" @if (old('category_id') == $category->id) selected="selected" @endif>{{ $category->name }}</option>
                 @endforeach
             </select>
         </div>
         <div class="mb-3">
             <label for="image" class="form-label">Image URL</label>
-            <input type="file" class="form-control" id="image" name="image" value="{{ old('image') }}"> 
+            <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image"
+                value="{{ old('image') }}">
+            @error('image')
+                <small class="text-danger">{{ $message }}</small>
+            @enderror
         </div>
         <div>
             <button class="btn btn-primary" type="submit">Save</button>
