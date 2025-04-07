@@ -2,7 +2,7 @@
 
 @section('content')
     <h2 class="py-4">New Post</h2>
-    <form action="{{ Route('posts.store') }}" method="post">
+    <form action="{{ Route('posts.store') }}" method="post" enctype="multipart/form-data">
         @csrf
         <div class="mb-3">
             <label for="title" class="form-label">Title</label>
@@ -23,30 +23,32 @@
             @enderror
         </div>
         <div class="mb-3">
-            <label for="user" class="form-label">Author</label>
-            <select class="form-select" id="user" name="user_id">
-                <option selected>Select the author</option>
-                @foreach ($authors as $author)
-                    <option value="{{ $author->id }}" @if (old('user_id') == $author->id) selected="selected" @endif>{{ $author->name }}</option>
-                @endforeach
-            </select>   
-        </div>
-        <div class="mb-3">
-            <label for="category" class="form-label">Category</label>
-            <select class="form-select" id="category" name="category_id">
-                <option selected>Select a category</option>
-                @foreach ($categories as $category)
-                    <option value="{{ $category->id }}" @if (old('category_id') == $category->id) selected="selected" @endif>{{ $category->name }}</option>
-                @endforeach
-            </select>
-        </div>
-        <div class="mb-3">
             <label for="image" class="form-label">Image URL</label>
             <input type="file" class="form-control @error('image') is-invalid @enderror" id="image" name="image"
                 value="{{ old('image') }}">
             @error('image')
                 <small class="text-danger">{{ $message }}</small>
             @enderror
+        </div>
+        <div class="mb-3">
+            <label for="user" class="form-label">Author</label>
+            <select class="form-select" id="user" name="user_id">
+                <option selected>Select the author</option>
+                @foreach ($authors as $author)
+                    <option value="{{ $author->id }}" @if (old('user_id') == $author->id) selected="selected" @endif>
+                        {{ $author->name }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="category" class="form-label">Category</label>
+            <select class="form-select" id="category" name="category_id">
+                <option selected>Select a category</option>
+                @foreach ($categories as $category)
+                    <option value="{{ $category->id }}" @if (old('category_id') == $category->id) selected="selected" @endif>
+                        {{ $category->name }}</option>
+                @endforeach
+            </select>
         </div>
         <div>
             <button class="btn btn-primary" type="submit">Save</button>

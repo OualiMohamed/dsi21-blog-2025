@@ -6,6 +6,7 @@ use App\Models\Post;
 use App\Models\User;
 use App\Models\Category;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 
 class PostController extends Controller
 {
@@ -38,17 +39,17 @@ class PostController extends Controller
     public function store(Request $request)
     {
         // Valider les données du formulaire
-        $request->validate([
-            'title' => 'required|string|min:5',
-            'content' => 'required|string|min:10',
-            'user_id' => 'required|exists:users,id',
-            'category_id' => 'required|exists:categories,id',
-        ]);
+        $request->validate($this->validationRules());
+
+        // Récupérer le nom de l'image uploadée
+        // puis le déplacer dans le dossier storage/app/posts
+        $image = Storage::disk('public')->put('posts', $request->file('image'));
 
         // Créer une nouvelle instance de Post
         $newPost = new Post();
         $newPost->title = $request->title;
         $newPost->content = $request->input('content');
+        $newPost->image = $image; // Enregistrer le nom de l'image
         $newPost->user_id = $request->input('user_id'); // Récupérer l'ID de l'auteur   
         $newPost->category_id = $request->input('category_id'); // Récupérer l'ID de la catégorie
         
@@ -91,5 +92,18 @@ class PostController extends Controller
     public function destroy(string $id)
     {
         //
+    }
+
+    /**
+     * Validation rules for the post creation form.
+     */
+    public function validationRules(){
+        return [
+            'title' => 'required|string|min:5',
+            'content' => 'required|string|min:10',
+            'user_id' => 'required|exists:users,id',
+            'category_id' => 'required|exists:categories,id',
+            'image' => 'image|mimes:jpeg,png,jpg,gif,svg|max:2048', // 2MB max
+        ];
     }
 }

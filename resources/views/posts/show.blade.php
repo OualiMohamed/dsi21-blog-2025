@@ -8,12 +8,13 @@
     @endif
     <h1>Post Details</h1>
     <div class="card mb-3">
-        <img src="{{ $post->image }}" class="card-img-top" alt="{{ $post->title }}">
+        @if (Str::startsWith($post->image, 'http'))
+            <img src="{{ $post->image }}" class="card-img-top" alt="{{ $post->title }}">
+        @else
+            <img src="{{ asset('storage/' . $post->image) }}" class="card-img-top" alt="{{ $post->title }}">    
+        @endif
         <div class="card-body">
-            <h5 class="card-title">
-                {{ $post->title }}
-                <span class="badge bg-primary">{{ $post->category->name }}</span>
-            </h5>
+            <h5 class="card-title"> {{ $post->title }} <span class="badge bg-primary">{{ $post->category->name }}</span></h5>
             <p class="card-text">Author: {{ $post->user->name }}</p>
             <p class="card-text">
                 <small class="text-body-secondary">
