@@ -75,7 +75,15 @@ class PostController extends Controller
      */
     public function edit(string $id)
     {
-        //
+        // Récupérer le post à éditer
+        $post = Post::findOrFail($id);
+        // Récupérer la liste des utilisateurs
+        $authors = User::all();
+        // Récupérer la liste des catégories
+        $categories = Category::all();
+        // Passer le post, les utilisateurs et les catégories à la vue 
+        // pour pré-remplir le formulaire d'édition 
+        return view('posts.edit', compact('post', 'authors', 'categories'));
     }
 
     /**
@@ -83,7 +91,30 @@ class PostController extends Controller
      */
     public function update(Request $request, string $id)
     {
-        //
+        $request->validate($this->validationRules());
+        // Récupérer le post à mettre à jour
+        $post = Post::findOrFail($id);
+        // Vérifier si une nouvelle image a été uploadée    
+        if ($request->hasFile('image')) {
+            // Supprimer l'ancienne image from storage
+            if (Storage::disk('public')->exists($post->image)) {
+                Storage::disk('public')->delete($post->image);
+            }
+            // Récupérer le nom de la nouvelle image uploadée
+            // puis le déplacer dans le dossier storage/app/posts
+            $newImage = Storage::disk('public')->put('posts', $request->file('image'));
+            // Mettre à jour le nom de l'image dans le post
+            $post->image = $newImage;
+
+            $post->title = $request->title;
+            $post->content = $request->input('content');
+            $post->user_id = $request->input('user_id'); // Récupérer l'ID de l'auteur  
+            $post->category_id = $request->input('category_id'); // Récupérer l'ID de la catégorie
+            // Sauvegarder le post
+            $post->save();
+            // Rediriger vers la liste des posts
+            return redirect()->route('posts.show', $post->id)->with('success', 'Post updated successfully.');    
+        }
     }
 
     /**

@@ -23,7 +23,7 @@
                         <td>{{ $post->category->name }}</td>
                         <td>
                             <a class="btn btn-outline-info" href="{{ Route('posts.show', $post->id) }}">Show</a>
-                            <button class="btn btn-outline-warning">Edit</button>
+                            <a class="btn btn-outline-warning" href="{{ Route('posts.edit', $post->id) }}">Edit</a>
                             <button class="btn btn-outline-danger">Delete</button>
                         </td>
                     </tr>
