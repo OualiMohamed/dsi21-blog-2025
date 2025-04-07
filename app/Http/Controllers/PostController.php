@@ -122,7 +122,21 @@ class PostController extends Controller
      */
     public function destroy(string $id)
     {
-        //
+        // Récupérer le post à supprimer
+        $post = Post::findOrFail($id); 
+        // Vérifier si une image existe pour le post
+        if ($post->image) {
+            // Supprimer l'image from storage
+            if (Storage::disk('public')->exists($post->image)) {
+                Storage::disk('public')->delete($post->image);
+            }
+        }
+
+        // Supprimer le post de la base de données
+        $post->delete();
+
+        // Rediriger vers la liste des posts
+        return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
     }
 
     /**

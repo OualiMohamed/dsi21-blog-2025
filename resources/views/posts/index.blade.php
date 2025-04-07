@@ -2,6 +2,11 @@
 
 
     @section('content')
+        @if (session('success'))
+            <div class="alert alert-success" role="alert">
+                {{ session('success') }}
+            </div>
+        @endif
         <a href="{{ url('posts/create') }}" class="btn btn-primary">New Post</a>
         <h2 class="py-4">Blog DSI21</h2>
         <table class="table table-bordered">
@@ -24,7 +29,13 @@
                         <td>
                             <a class="btn btn-outline-info" href="{{ Route('posts.show', $post->id) }}">Show</a>
                             <a class="btn btn-outline-warning" href="{{ Route('posts.edit', $post->id) }}">Edit</a>
-                            <button class="btn btn-outline-danger">Delete</button>
+                            <form action="{{ route('posts.destroy', $post->id) }}"
+                                onsubmit="return confirm('Are you sure you want to delete this post?')"
+                                style="display: inline-block;" method="POST">
+                                @csrf
+                                @method('DELETE')
+                                <button type="submit" class="btn btn-outline-danger">Delete</button>
+                            </form>
                         </td>
                     </tr>
                 @endforeach
