@@ -107,25 +107,24 @@ class PostController extends Controller
             $newImage = Storage::disk('public')->put('posts', $request->file('image'));
             // Mettre à jour le nom de l'image dans le post
             $post->image = $newImage;
-
-            $post->title = $request->title;
-            $post->content = $request->input('content');
-            $post->user_id = $request->input('user_id'); // Récupérer l'ID de l'auteur  
-            $post->category_id = $request->input('category_id'); // Récupérer l'ID de la catégorie
-            // Sauvegarder le post
-            $post->save();
-
-
-            // Ajouter une notification de succès
-            // sweetalert()->info('Post updated successfully!');
-            // sweetalert()->showConfirmButton(true, 'test', null, null);
-
-            // Add a success notification
-            flash()->success('Post updated successfully!');
-
-            // Rediriger vers la liste des posts
-            return redirect()->route('posts.show', $post->id);
         }
+        $post->title = $request->title;
+        $post->content = $request->input('content');
+        $post->user_id = $request->input('user_id'); // Récupérer l'ID de l'auteur  
+        $post->category_id = $request->input('category_id'); // Récupérer l'ID de la catégorie
+        // Sauvegarder le post
+        $post->save();
+
+
+        // Ajouter une notification de succès
+        // sweetalert()->info('Post updated successfully!');
+        // sweetalert()->showConfirmButton(true, 'test', null, null);
+
+        // Add a success notification
+        flash()->success('Post updated successfully!');
+
+        // Rediriger vers la liste des posts
+        return redirect()->route('posts.show', $post->id);
     }
 
     /**
