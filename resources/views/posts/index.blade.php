@@ -28,9 +28,10 @@
                         <td>{{ $post->category->name }}</td>
                         <td>
                             <a class="btn btn-outline-info" href="{{ Route('posts.show', $post->id) }}">Show</a>
-                            <a class="btn btn-outline-warning" href="{{ Route('posts.edit', $post->id) }}">Edit</a>
+                            <a onclick="confirmation(event, 'Are you sure to edit ?')" class="btn btn-outline-warning"
+                                href="{{ Route('posts.edit', $post->id) }}">Edit</a>
                             <form action="{{ route('posts.destroy', $post->id) }}"
-                                onsubmit="return confirm('Are you sure you want to delete this post?')"
+                                onclick="confirmation(event, 'Are you sure to delete ?')"
                                 style="display: inline-block;" method="POST">
                                 @csrf
                                 @method('DELETE')
@@ -43,8 +44,23 @@
         </table>
     @endsection
 
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-k6d4wzSIapyDyv1kpU366/PK5hCdSbCRGRCMv+eplOQJWyd1fbcAu9OCUj5zNLiq" crossorigin="anonymous">
+    <script>
+        function confirmation(event, message) {
+            event.preventDefault(); // Prevent the default action (navigation)
+            var link = event.currentTarget; // Get the clicked link
+
+            swal({
+                title: message,
+                text: "You won't be able to revert this!",
+                icon: "warning",
+                buttons: true,
+                dangerMode: true,
+            }).then((willDelete) => {
+                if (willDelete) {
+                    window.location.href = link.href; // Redirect to the link's URL
+                }
+            });
+        }
     </script>
     </body>
 
