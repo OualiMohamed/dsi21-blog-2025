@@ -115,9 +115,14 @@ class PostController extends Controller
             // Sauvegarder le post
             $post->save();
 
+
+            // Ajouter une notification de succès
+            // sweetalert()->info('Post updated successfully!');
+            // sweetalert()->showConfirmButton(true, 'test', null, null);
+
             // Add a success notification
             flash()->success('Post updated successfully!');
-            
+
             // Rediriger vers la liste des posts
             return redirect()->route('posts.show', $post->id);
         }
