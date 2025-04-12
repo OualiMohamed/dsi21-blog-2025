@@ -52,12 +52,12 @@ class PostController extends Controller
         $newPost->image = $image; // Enregistrer le nom de l'image
         $newPost->user_id = $request->input('user_id'); // Récupérer l'ID de l'auteur   
         $newPost->category_id = $request->input('category_id'); // Récupérer l'ID de la catégorie
-        
+
         // Sauvegarder le post
-        $newPost->save();  
-        
+        $newPost->save();
+
         // Rediriger vers la liste des posts
-        
+
         return redirect()->route('posts.show', $newPost->id)->with('success', 'Post created successfully.');
     }
 
@@ -112,8 +112,12 @@ class PostController extends Controller
             $post->category_id = $request->input('category_id'); // Récupérer l'ID de la catégorie
             // Sauvegarder le post
             $post->save();
+
+            // Add a success notification
+            flash()->success('Post updated successfully!');
+            
             // Rediriger vers la liste des posts
-            return redirect()->route('posts.show', $post->id)->with('success', 'Post updated successfully.');    
+            return redirect()->route('posts.show', $post->id);
         }
     }
 
@@ -123,7 +127,7 @@ class PostController extends Controller
     public function destroy(string $id)
     {
         // Récupérer le post à supprimer
-        $post = Post::findOrFail($id); 
+        $post = Post::findOrFail($id);
         // Vérifier si une image existe pour le post
         if ($post->image) {
             // Supprimer l'image from storage
@@ -142,7 +146,8 @@ class PostController extends Controller
     /**
      * Validation rules for the post creation form.
      */
-    public function validationRules(){
+    public function validationRules()
+    {
         return [
             'title' => 'required|string|min:5',
             'content' => 'required|string|min:10',
