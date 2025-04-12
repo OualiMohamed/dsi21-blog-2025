@@ -56,9 +56,11 @@ class PostController extends Controller
         // Sauvegarder le post
         $newPost->save();
 
-        // Rediriger vers la liste des posts
+        // Ajouter une notification de succès
+        flash()->info('Post created successfully!');
 
-        return redirect()->route('posts.show', $newPost->id)->with('success', 'Post created successfully.');
+        // Rediriger vers la liste des posts
+        return redirect()->route('posts.show', $newPost->id);
     }
 
     /**
