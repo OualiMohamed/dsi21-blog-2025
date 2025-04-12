@@ -141,8 +141,11 @@ class PostController extends Controller
         // Supprimer le post de la base de données
         $post->delete();
 
+        // Ajouter une notification de succès
+        flash()->error('Post deleted successfully!');
+
         // Rediriger vers la liste des posts
-        return redirect()->route('posts.index')->with('success', 'Post deleted successfully.');
+        return redirect()->route('posts.index');
     }
 
     /**
